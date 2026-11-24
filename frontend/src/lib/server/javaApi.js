@@ -15,10 +15,21 @@ export async function javaApi(event, path, { method = 'GET', body } = {}) {
     }
 
     // Передаём cookies пользователя Java backend
-    const cookie = event.request.headers.get('cookie');
+    const cookies = [];
 
-    if (cookie) {
-        headers.Cookie = cookie;
+    const accessToken = event.cookies.get('access_token');
+    const refreshToken = event.cookies.get('refresh_token');
+
+    if (accessToken) {
+        cookies.push(`access_token=${accessToken}`);
+    }
+
+    if (refreshToken) {
+        cookies.push(`refresh_token=${refreshToken}`);
+    }
+
+    if (cookies.length) {
+        headers.Cookie = cookies.join('; ');
     }
 
     try {
@@ -31,3 +42,4 @@ export async function javaApi(event, path, { method = 'GET', body } = {}) {
         throw new Error('Не удалось подключиться к Java backend');
     }
 }
+
