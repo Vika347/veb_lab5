@@ -5,6 +5,11 @@ import { javaApi } from '#lib/server/javaApi.js';
 export async function handle({ event, resolve }) {
     const path = event.url.pathname;
 
+// Позволяем завершить сессию даже при недоступности Java backend
+if (path === '/logout' && event.request.method === 'POST') {
+    return resolve(event);
+}
+
     // Маршруты c авторизацией
     const requiresAuth =
         path === '/students' ||
