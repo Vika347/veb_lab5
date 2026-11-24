@@ -1,2 +1,34 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    // Получаем данные пользователя из +layout.server.js
+    let { data } = $props();
+</script>
+
+<section class="home">
+    <h1>Система управления студентами</h1>
+
+    <p>
+        Добро пожаловать в систему управления студентами!
+    </p>
+
+    {#if data.user}
+        <!-- Главная страница авторизованного пользователя -->
+        <p>Вы вошли как {data.user.username}.</p>
+
+        <a href="/students">
+            Перейти к списку студентов
+        </a>
+
+        <p>
+            <a href="/profile">Мой профиль</a>
+        </p>
+    {:else}
+        <!-- Главная страница неавторизованного пользователя -->
+        <p>
+            Для работы с системой необходимо войти в аккаунт
+            или зарегистрироваться.
+        </p>
+
+        <a href="/login">Войти</a>
+        <a href="/register">Зарегистрироваться</a>
+    {/if}
+</section>
